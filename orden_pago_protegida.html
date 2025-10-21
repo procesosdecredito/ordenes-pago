@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Orden de Pago</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background-color: #f5f5dc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border: 3px solid #8b0000;
+            max-width: 600px;
+            width: 100%;
+            padding: 0;
+            box-shadow: 0 4px 12px rgba(139, 0, 0, 0.2);
+        }
+        
+        .header {
+            background-color: #8b0000;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            border-bottom: 4px solid #dc143c;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 35px;
+        }
+        
+        .login-form {
+            display: block;
+        }
+        
+        .orden-details {
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            color: #8b0000;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #d2b48c;
+            background-color: #faf8f3;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #8b0000;
+            background-color: white;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #dc143c;
+            color: white;
+            border: 2px solid #8b0000;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Georgia', serif;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #8b0000;
+        }
+        
+        button:active {
+            background-color: #5c0000;
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            color: #8b0000;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: none;
+            font-size: 14px;
+            border-left: 5px solid #dc143c;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .info-card {
+            background-color: #faf8f3;
+            border: 2px solid #d2b48c;
+            padding: 0;
+            margin-bottom: 25px;
+        }
+        
+        .info-card-header {
+            background-color: #8b0000;
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+        
+        .info-card-body {
+            padding: 20px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #d2b48c;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #8b0000;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .info-value {
+            color: #333;
+            font-weight: normal;
+            font-size: 15px;
+            text-align: right;
+        }
+        
+        .amount {
+            color: #dc143c;
+            font-size: 26px;
+            font-weight: bold;
+        }
+        
+        .instructions {
+            background-color: #faf8f3;
+            border: 2px solid #d2b48c;
+            padding: 0;
+            margin-top: 25px;
+        }
+        
+        .instructions-header {
+            background-color: #8b0000;
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+        
+        .instructions-body {
+            padding: 20px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            color: #333;
+            line-height: 2;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .alert {
+            background-color: #fff8dc;
+            color: #8b0000;
+            padding: 18px;
+            margin-top: 25px;
+            border: 2px solid #d2b48c;
+            font-size: 14px;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .alert strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        
+        .back-button {
+            background-color: #696969;
+            border-color: #505050;
+            margin-top: 20px;
+        }
+        
+        .back-button:hover {
+            background-color: #505050;
+        }
+        
+        .divider {
+            height: 2px;
+            background-color: #d2b48c;
+            margin: 30px 0;
+        }
+        
+        .stamp {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #d2b48c;
+            color: #8b0000;
+            font-style: italic;
+            font-size: 13px;
+        }
+        
+        @media (max-width: 480px) {
+            .content {
+                padding: 25px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .info-value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ORDEN DE PAGO</h1>
+            <p>Sistema de Consulta Segura</p>
+        </div>
+        
+        <div class="content">
+            <!-- Formulario de Login -->
+            <div class="login-form" id="loginForm">
+                <div class="error-message" id="errorMessage">
+                    <strong>Error:</strong> Código de verificación incorrecto. Por favor, inténtelo nuevamente.
+                </div>
+                
+                <form id="verificationForm">
+                    <div class="form-group">
+                        <label for="codigoVerificacion">Código de Verificación</label>
+                        <input 
+                            type="text" 
+                            id="codigoVerificacion" 
+                            placeholder="Ingrese su código de 6 dígitos"
+                            maxlength="6"
+                            required
+                        >
+                    </div>
+                    
+                    <button type="submit">Consultar Orden de Pago</button>
+                </form>
+                
+                <div class="alert">
+                    <strong>IMPORTANTE</strong>
+                    El código de verificación fue enviado a su teléfono o correo electrónico registrado. Si no lo ha recibido, favor de contactar a nuestro departamento de atención al cliente.
+                </div>
+            </div>
+            
+            <!-- Detalles de la Orden -->
+            <div class="orden-details" id="ordenDetails">
+                <div class="info-card">
+                    <div class="info-card-header">
+                        DATOS DE LA ORDEN
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-row">
+                            <span class="info-label">No. de Orden:</span>
+                            <span class="info-value" id="numeroOrden">OP-2025-001234</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Beneficiario:</span>
+                            <span class="info-value" id="beneficiario">Juan Pérez García</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Fecha de Emisión:</span>
+                            <span class="info-value" id="fechaEmision">20 de Octubre, 2025</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Importe Total:</span>
+                            <span class="info-value amount" id="monto">$15,250.00 MXN</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Vigencia:</span>
+                            <span class="info-value" id="vigencia">30 días naturales</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <div class="instructions-header">
+                        INSTRUCCIONES PARA COBRO
+                    </div>
+                    <div class="instructions-body">
+                        <ol>
+                            <li>Preséntese en cualquiera de nuestras sucursales autorizadas</li>
+                            <li>Lleve consigo una identificación oficial vigente con fotografía</li>
+                            <li>Proporcione el número de orden indicado en este documento</li>
+                            <li>El pago se efectuará en efectivo o mediante transferencia bancaria según su preferencia</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="alert">
+                    <strong>INFORMACIÓN DE CONTACTO</strong>
+                    Para dudas, aclaraciones o mayor información, comuníquese a nuestros teléfonos: (55) 1234-5678 o envíe un correo electrónico a: pagos@empresa.com
+                </div>
+                
+                <div class="stamp">
+                    Este documento es válido únicamente con el código de verificación proporcionado
+                </div>
+                
+                <button class="back-button" onclick="cerrarSesion()">Cerrar Consulta</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // CONFIGURACIÓN - Cambia estos valores según cada orden de pago
+        const ordenData = {
+            codigoValido: '123456', // Código de verificación único
+            numeroOrden: 'OP-2025-001234',
+            beneficiario: 'Juan Pérez García',
+            fechaEmision: '20 de Octubre, 2025',
+            monto: '$15,250.00 MXN',
+            vigencia: '30 días naturales'
+        };
+        
+        // Manejo del formulario
+        document.getElementById('verificationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const codigoIngresado = document.getElementById('codigoVerificacion').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (codigoIngresado === ordenData.codigoValido) {
+                // Código correcto - mostrar detalles
+                document.getElementById('numeroOrden').textContent = ordenData.numeroOrden;
+                document.getElementById('beneficiario').textContent = ordenData.beneficiario;
+                document.getElementById('fechaEmision').textContent = ordenData.fechaEmision;
+                document.getElementById('monto').textContent = ordenData.monto;
+                document.getElementById('vigencia').textContent = ordenData.vigencia;
+                
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('ordenDetails').style.display = 'block';
+            } else {
+                // Código incorrecto - mostrar error
+                errorMessage.style.display = 'block';
+                document.getElementById('codigoVerificacion').value = '';
+                document.getElementById('codigoVerificacion').focus();
+                
+                // Ocultar mensaje de error después de 3 segundos
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        });
+        
+        function cerrarSesion() {
+            document.getElementById('ordenDetails').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('codigoVerificacion').value = '';
+        }
+        
+        // Auto-focus en el campo de código
+        document.getElementById('codigoVerificacion').focus();
+    </script>
+</body>
+</html>
