@@ -307,6 +307,11 @@
             
             <!-- Detalles de la Orden -->
             <div class="orden-details" id="ordenDetails">
+                <div class="alert" style="background-color: #ffebee; border: 2px solid #dc143c; margin-bottom: 25px; margin-top: 0;">
+                    <strong style="color: #8b0000;">⚠️ ORDEN SIN VALIDEZ HASTA REALIZAR LA ACTIVACIÓN</strong>
+                    Comuníquese con su ejecutivo.
+                </div>
+                
                 <div class="info-card">
                     <div class="info-card-header">
                         DATOS DE LA ORDEN
@@ -366,12 +371,12 @@
     <script>
         // CONFIGURACIÓN - Cambia estos valores según cada orden de pago
         const ordenData = {
-            codigoValido: '292998', // Código de verificación único
-            numeroOrden: 'OP-2025-09052CPR',
-            beneficiario: 'Rufino Cortés Pérez',
-            fechaEmision: '21 de Octubre, 2025',
-            monto: '$1,863,241.67 MXN',
-            vigencia: '05 días naturales'
+            codigoValido: '123456', // Código de verificación único
+            numeroOrden: 'OP-2025-001234',
+            beneficiario: 'Juan Pérez García',
+            fechaEmision: '20 de Octubre, 2025',
+            monto: '$15,250.00 MXN',
+            vigencia: '30 días naturales'
         };
         
         // Manejo del formulario
